@@ -1,14 +1,13 @@
 # coincap-viz
-
-### Data Source
-Using the CoinCap API 2.0, dashboard some visualizations relating to the top 100 coins.
-
-See documentation at https://docs.coincap.io/
-
-### Dashboard
-Access it at https://coincap-viz-58c44f44475d.herokuapp.com/
-
-Or run locally
+### View the dashboard at https://coincap-viz-58c44f44475d.herokuapp.com/
+Alternatively, run it locally
 ```
 streamlit run market_summary.py
 ```
+
+### Tools
+- Docker: containerizing the application and managing dependencies consistently across environments
+- Streamlit: building app for data visualization
+- CoinCap API: real-time crypto data without no API key. [Documentation](https://docs.coincap.io/)
+- Heroku: deploying
+- Python (pandas, numpy, plotly)
