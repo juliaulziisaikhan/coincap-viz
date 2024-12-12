@@ -1,11 +1,11 @@
-from config import load_config
 import streamlit as st
 from app import EnhancedCryptoVisualizer
+from constants import CONSTANTS
 
 st.set_page_config(layout="wide")
 
-config = load_config('config.yaml')
-st.title(config['main_page']['dashboard']['title'])
+main_page_title = CONSTANTS['main_page']['dashboard']['title']
+st.title(main_page_title)
 
 # initialize
 visualizer = EnhancedCryptoVisualizer()
@@ -17,11 +17,11 @@ st.empty()
 
 # part 2
 # 2x2 visualizations
-st.subheader(config['second_part']['dashboard']['title'])
-viz2 = config['top_asset_performance']['dashboard']['title']
-viz1 = config['asset_risk_profile']['dashboard']['title']
-viz3 = config['price_correlation_matrix']['dashboard']['title']
-viz4 = config['asset_group_performance']['dashboard']['title']
+st.subheader(CONSTANTS['second_part']['dashboard']['title'])
+viz2 = CONSTANTS['top_asset_performance']['dashboard']['title']
+viz1 = CONSTANTS['asset_risk_profile']['dashboard']['title']
+viz3 = CONSTANTS['price_correlation_matrix']['dashboard']['title']
+viz4 = CONSTANTS['asset_group_performance']['dashboard']['title']
 
 
 with st.container():
