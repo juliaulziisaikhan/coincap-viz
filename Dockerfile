@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8501
 
 # command to run the app
-CMD ["streamlit", "run", "market_summary.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["sh", "-c", "streamlit run market_summary.py --server.port=$PORT --server.address=0.0.0.0"]
