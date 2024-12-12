@@ -5,19 +5,18 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 import sys
-from config import load_config
+from constants import CONSTANTS
 from coincap_api import CoinCapAPI
 import requests
 sys.path.append('..')
 
 class EnhancedCryptoVisualizer:
-    def __init__(self, config_file='config.yaml'):
-        self.config = load_config(config_file)
+    def __init__(self):
         self.api = CoinCapAPI()
         
     def get_market_metrics(self):
         """calc market metrics"""
-        assets = self.api.get_assets(limit=self.config['market_metrics']['calcs']['limit'])
+        assets = self.api.get_assets(limit=CONSTANTS['market_metrics']['calcs']['limit'])
         df = pd.DataFrame(assets)
         df['changePercent24Hr'] = df['changePercent24Hr'].astype(float)
         df['volumeUsd24Hr'] = df['volumeUsd24Hr'].astype(float)
@@ -30,24 +29,24 @@ class EnhancedCryptoVisualizer:
     
     def create_market_metrics(self):
         """viz market metrics"""
-        st.subheader(self.config['market_metrics']['dashboard']['title'])
+        st.subheader(CONSTANTS['market_metrics']['dashboard']['title'])
         gainers, losers, volume_leaders = self.get_market_metrics()
         
         # 3x3 viz
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.subheader(self.config['market_metrics']['dashboard']['gainers_title'])
+            st.subheader(CONSTANTS['market_metrics']['dashboard']['gainers_title'])
             for _, row in gainers.iterrows():
                 st.metric(f"{row['name']} ({row['symbol']})", f"{row['changePercent24Hr']:.2f}%")
         
         with col2:
-            st.subheader(self.config['market_metrics']['dashboard']['losers_title'])
+            st.subheader(CONSTANTS['market_metrics']['dashboard']['losers_title'])
             for _, row in losers.iterrows():
                 st.metric(f"{row['name']} ({row['symbol']})", f"{row['changePercent24Hr']:.2f}%")
         
         with col3:
-            st.subheader(self.config['market_metrics']['dashboard']['volume_leaders_title'])
+            st.subheader(CONSTANTS['market_metrics']['dashboard']['volume_leaders_title'])
             for _, row in volume_leaders.iterrows():
                 st.metric(f"{row['name']} ({row['symbol']})", f"${row['volumeUsd24Hr']:,.0f}")
 
@@ -60,8 +59,8 @@ class EnhancedCryptoVisualizer:
         """viz asset risk profile"""
         # only look at top 20 assets
         assets = self.api.get_assets(limit=20)
-        lookback_d = self.config['asset_risk_profile']['calcs']['lookback_d']
-        interval_h = self.config['asset_risk_profile']['calcs']['interval']
+        lookback_d = CONSTANTS['asset_risk_profile']['calcs']['lookback_d']
+        interval_h = CONSTANTS['asset_risk_profile']['calcs']['interval']
         
         # calc volatility for each asset
         volatilities = []
@@ -101,7 +100,7 @@ class EnhancedCryptoVisualizer:
             color='24h Change',
             hover_name='Asset',
             log_x=True,
-            title=self.config['asset_risk_profile']['dashboard']['title']
+            title=CONSTANTS['asset_risk_profile']['dashboard']['title']
         )
         
         fig.update_layout(
@@ -116,8 +115,8 @@ class EnhancedCryptoVisualizer:
         """viz multi-asset price movement"""
         # Get top N assets
         assets = self.api.get_assets(limit=top_n)
-        lookback_d = self.config['top_asset_performance']['calcs']['lookback_d']
-        interval_h = self.config['top_asset_performance']['calcs']['interval']
+        lookback_d = CONSTANTS['top_asset_performance']['calcs']['lookback_d']
+        interval_h = CONSTANTS['top_asset_performance']['calcs']['interval']
         
         # Get historical data for each asset
         fig = go.Figure()
@@ -147,7 +146,7 @@ class EnhancedCryptoVisualizer:
             ))
         
         fig.update_layout(
-            title=self.config['top_asset_performance']['dashboard']['title'],
+            title=CONSTANTS['top_asset_performance']['dashboard']['title'],
             xaxis_title='Date',
             yaxis_title='Price Change (%)',
             hovermode='x unified'
@@ -158,8 +157,8 @@ class EnhancedCryptoVisualizer:
     def create_price_correlation_matrix(self, top_n=10):
         """Create price correlation matrix for top assets"""
         assets = self.api.get_assets(limit=top_n)
-        lookback_d = self.config['price_correlation_matrix']['calcs']['lookback_d']
-        interval_h = self.config['price_correlation_matrix']['calcs']['interval']
+        lookback_d = CONSTANTS['price_correlation_matrix']['calcs']['lookback_d']
+        interval_h = CONSTANTS['price_correlation_matrix']['calcs']['interval']
         price_data = {}
         
         # Collect historical prices for each asset
@@ -179,7 +178,7 @@ class EnhancedCryptoVisualizer:
         # Create heatmap
         fig = px.imshow(
             corr_matrix,
-            title=self.config['price_correlation_matrix']['dashboard']['title'],
+            title=CONSTANTS['price_correlation_matrix']['dashboard']['title'],
             color_continuous_scale='RdBu',
             aspect='auto'
         )
@@ -195,8 +194,8 @@ class EnhancedCryptoVisualizer:
             'Layer 1': ['bitcoin', 'ethereum', 'solana'],
             'Exchange Tokens': ['binance-coin', 'ftx-token']
         }
-        lookback_d = self.config['asset_group_performance']['calcs']['lookback_d']
-        interval_h = self.config['asset_group_performance']['calcs']['interval']
+        lookback_d = CONSTANTS['asset_group_performance']['calcs']['lookback_d']
+        interval_h = CONSTANTS['asset_group_performance']['calcs']['interval']
         fig = go.Figure()
         
         for group_name, assets in groups.items():
@@ -231,7 +230,7 @@ class EnhancedCryptoVisualizer:
                 ))
         
         fig.update_layout(
-            title=self.config['asset_group_performance']['dashboard']['title'],
+            title=CONSTANTS['asset_group_performance']['dashboard']['title'],
             xaxis_title='Date',
             yaxis_title='Average Price Change (%)',
             hovermode='x unified'
