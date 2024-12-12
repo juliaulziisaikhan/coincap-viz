@@ -1,6 +1,9 @@
 # coincap-viz
-### View the dashboard at https://coincap-viz-58c44f44475d.herokuapp.com/
-Alternatively, run it locally
+### View the dashboard at https://coincap-viz-bjejfqwxp3kxhemssyxr2k.streamlit.app/
+
+Or at https://coincap-viz-58c44f44475d.herokuapp.com/
+
+Or run locally
 ```
 streamlit run market_summary.py
 ```
