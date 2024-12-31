@@ -1,7 +1,7 @@
 # coincap-viz
-### View the dashboard at https://coincap-viz-bjejfqwxp3kxhemssyxr2k.streamlit.app/
 
-Or at https://coincap-viz-58c44f44475d.herokuapp.com/
+View the dashboard at https://coincap-viz-58c44f44475d.herokuapp.com/
+or https://coincap-viz-bjejfqwxp3kxhemssyxr2k.streamlit.app/
 
 Or run locally
 ```
